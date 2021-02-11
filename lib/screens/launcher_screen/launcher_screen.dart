@@ -4,6 +4,7 @@ import 'package:navana_air/comman/string.dart';
 import 'package:navana_air/components/signup_button.dart';
 import 'package:navana_air/screens/launcher_screen/slide_dots.dart';
 import 'package:navana_air/screens/launcher_screen/sliding_items.dart';
+import 'package:navana_air/screens/signup_screen.dart';
 
 
 //Launcher screen which appears after the Splash screen
@@ -67,6 +68,8 @@ class _LauncherScreenState extends State<LauncherScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
+        height: MediaQuery.of(context).size.height,
+        width: MediaQuery.of(context).size.width,
         color: Colors.white,
         child: Padding(
           padding: const EdgeInsets.all(20),
@@ -104,7 +107,11 @@ class _LauncherScreenState extends State<LauncherScreen> {
                   ],
                 ),
               ),
-              SignUpButton(onPressed: (){},
+              SignUpButton(
+                onPressed: (){
+                Navigator.pushNamed(context, '/signup');
+                // Navigator.push(context, MaterialPageRoute(builder: (context)=>SignUpScreen()));
+                },
               text: TextString.start_booking,),
               SizedBox(
                 height: 20,

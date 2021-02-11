@@ -34,13 +34,13 @@ class _SplashScreenState extends State<SplashScreen> {
               // The RichText widget is used for displaying a paragraph of text with multiple styles.
                RichText(
                  text: TextSpan(
-                   text: TextString.navana,
+                   text: TextString.appTitleNavana,
                    style: TextStyle(
                      fontSize: 40
                    ),
                    children: <TextSpan>[
                      TextSpan(
-                       text: TextString.air,style: TextStyle(
+                       text: TextString.appTitleAir,style: TextStyle(
                        color: CustomizeColors.buttonPinkColor,fontSize: 40
                      )
                      )

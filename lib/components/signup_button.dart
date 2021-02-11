@@ -9,26 +9,23 @@ class SignUpButton extends StatelessWidget {
   const SignUpButton({Key key, this.text, this.onPressed}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          RaisedButton(
+    return Container(
+      width: MediaQuery.of(context).size.width *0.5,
+         child: RaisedButton(
             child: Text(
              text,
               style: TextStyle(
-                fontSize: 16,
+                fontSize: 15,
               ),
             ),
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(25),
             ),
             padding: const EdgeInsets.all(15),
             color: CustomizeColors.buttonPinkColor,
-            textColor: CustomizeColors.whiteColor,
-            onPressed: () {
-            },
+            textColor: CustomizeColors.textWhiteColor,
+            onPressed: onPressed,
           ),
-        ],
       );
   }
 }
