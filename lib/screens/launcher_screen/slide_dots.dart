@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:navana_air/comman/colors.dart';
 
+//Indicators(Dots) which are used in launcher screen to show which image is running/displaying currently
 class SlideDots extends StatelessWidget {
   bool isActive;
   SlideDots(this.isActive);
@@ -13,7 +14,7 @@ class SlideDots extends StatelessWidget {
       height: isActive ? 8 : 8,
       width: isActive ? 8 : 8,
       decoration: BoxDecoration(
-        color: isActive ? CustomizeColors.PinkColor : Colors.grey,
+        color: isActive ? CustomizeColors.buttonPinkColor : Colors.grey,
         borderRadius: BorderRadius.all(Radius.circular(12)),
       ),
     );

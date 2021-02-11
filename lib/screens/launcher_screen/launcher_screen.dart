@@ -1,11 +1,12 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:navana_air/comman/string.dart';
-import 'package:navana_air/models/slider.dart';
+import 'package:navana_air/components/signup_button.dart';
 import 'package:navana_air/screens/launcher_screen/slide_dots.dart';
 import 'package:navana_air/screens/launcher_screen/sliding_items.dart';
-import 'package:navana_air/widgets/signup_button.dart';
 
+
+//Launcher screen which appears after the Splash screen
 class LauncherScreen extends StatefulWidget {
   @override
   _LauncherScreenState createState() => _LauncherScreenState();
@@ -19,25 +20,43 @@ class _LauncherScreenState extends State<LauncherScreen> {
   void initState() {
     super.initState();
     Timer.periodic(Duration(seconds: 3), (Timer timer) {
-      if (_currentPage < 2) {
-        _currentPage++;
-      } else {
-        _currentPage = 0;
+      // trying to handle the exception within the try catch block
+      try{
+        if (_currentPage < 2) {
+          _currentPage++;
+        } else {
+          _currentPage = 0;
+        }
+        _pageController.animateToPage(
+          _currentPage,
+          duration: Duration(milliseconds: 500),
+          curve: Curves.easeIn,
+        );
+      }catch (e){
+        print(e.toString());
       }
-      _pageController.animateToPage(
-        _currentPage,
-        duration: Duration(milliseconds: 500),
-        curve: Curves.easeIn,
-      );
+
+      // if (_currentPage < 2) {
+      //   _currentPage++;
+      // } else {
+      //   _currentPage = 0;
+      // }
+      // _pageController.animateToPage(
+      //   _currentPage,
+      //   duration: Duration(milliseconds: 500),
+      //   curve: Curves.easeIn,
+      // );
     });
   }
 
+  //dispose method use to release the memory allocated to variables when state object is removed.
   @override
   void dispose() {
     super.dispose();
     _pageController.dispose();
   }
 
+  //This method will call for changing the page
   _onPageChanged(int index) {
     setState(() {
       _currentPage = index;
