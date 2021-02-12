@@ -9,6 +9,7 @@ class TextString{
   static const buttonSignUp = 'SIGN UP';
   static const titleTextSignUp = 'Create \nan account';
   static const alreayHaveAnAccount = 'Already have an account?';
+  static const skipForNow = 'Skip for Now';
 }
 
 //Image Array list which are used in launcher screen
