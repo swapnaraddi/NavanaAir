@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:navana_air/screens/Home/home_screen.dart';
 import 'package:navana_air/screens/launcher_screen/launcher_screen.dart';
+import 'package:navana_air/screens/login_screen.dart';
 import 'package:navana_air/screens/signup_screen.dart';
 import 'package:navana_air/screens/splash_screen.dart';
 
@@ -17,8 +19,10 @@ class MyApp extends StatelessWidget {
         '/splash': (context) => SplashScreen(),
         '/launcher': (context) => LauncherScreen(),
         '/signup': (context) => SignUpScreen(),
+        '/login' :(context) => LoginScreen(),
+        '/home' : (context) => HomeScreen()
       },
-      home: SplashScreen(),
+      home: HomeScreen(),
     );
   }
 }

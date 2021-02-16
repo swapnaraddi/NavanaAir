@@ -1,10 +1,13 @@
 import 'dart:async';
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:navana_air/comman/string.dart';
 import 'package:navana_air/components/signup_button.dart';
+import 'package:navana_air/screens/Home/home_screen.dart';
 import 'package:navana_air/screens/launcher_screen/slide_dots.dart';
 import 'package:navana_air/screens/launcher_screen/sliding_items.dart';
-import 'package:navana_air/screens/signup_screen.dart';
+import 'package:navana_air/screens/login_screen.dart';
 
 
 //Launcher screen which appears after the Splash screen
@@ -47,6 +50,27 @@ class _LauncherScreenState extends State<LauncherScreen> {
       //   duration: Duration(milliseconds: 500),
       //   curve: Curves.easeIn,
       // );
+    });
+  }
+
+  //check if user already exist or not
+  void checkUserExistOrNot() {
+    FirebaseAuth.instance.currentUser().then((firebaseUser) {
+      try{
+      if (firebaseUser == null) {
+        print('Calling from Firebase' + FirebaseAuth.instance.currentUser().toString());
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+                builder: (BuildContext context) => LoginScreen()));
+      } else {
+        print('User already exist');
+        Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (BuildContext context) => HomeScreen()));
+      }
+    }catch (e){
+        print(e.toString());
+      }
     });
   }
 
@@ -109,8 +133,8 @@ class _LauncherScreenState extends State<LauncherScreen> {
               ),
               SignUpButton(
                 onPressed: (){
-                Navigator.pushNamed(context, '/signup');
-                // Navigator.push(context, MaterialPageRoute(builder: (context)=>SignUpScreen()));
+                  checkUserExistOrNot();
+                // Navigator.pushNamed(context, '/signup');
                 },
               text: TextString.start_booking,),
               SizedBox(

@@ -1,22 +1,25 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:navana_air/comman/colors.dart';
 import 'package:navana_air/comman/string.dart';
+import 'package:navana_air/components/customize_flat_button.dart';
 import 'package:navana_air/components/signup_button.dart';
-import 'package:navana_air/components/sized_box.dart';
+import 'package:navana_air/services/authentication.dart';
 
-class SignUpScreen extends StatefulWidget {
+import 'Home/home_screen.dart';
+
+class LoginScreen extends StatefulWidget {
   @override
-  _SignUpScreenState createState() => _SignUpScreenState();
+  _LoginScreenState createState() => _LoginScreenState();
 }
 
-class _SignUpScreenState extends State<SignUpScreen> {
-  final nameController = TextEditingController();
+class _LoginScreenState extends State<LoginScreen> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
   bool _passwordVisible;
   final _formKey = GlobalKey<FormState>();
-  String email, name, password;
+  String email, password;
 
   // Toggles the password show status
   @override
@@ -43,36 +46,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    //SizedBox(height: MediaQuery.of(context).size.height * 0.2),
-                    MaxSizedBox(),
+                    SizedBox(height: MediaQuery.of(context).size.height * 0.2),
                     Text(
-                      TextString.titleTextSignUp,
+                      'Log In',
+                      //TextString.titleTextSignUp,
                       style: TextStyle(fontSize: 40),
                     ),
                     SizedBox(height: 20),
-                    TextFormField(
-                        // key: _formKey,
-                        textCapitalization: TextCapitalization.words,
-                        keyboardType: TextInputType.name,
-                        controller: nameController,
-                        cursorColor: CustomizeColors.textBlackColor,
-                        style: TextStyle(color: CustomizeColors.textBlackColor),
-                        decoration: InputDecoration(
-                          enabledBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(
-                                color: CustomizeColors.textBlackColor),
-                          ),
-                          focusedBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(
-                                color: CustomizeColors.textBlackColor),
-                          ),
-                          labelText: TextString.name,
-                          labelStyle:
-                              TextStyle(color: CustomizeColors.textBlackColor),
-                          hintStyle:
-                              TextStyle(color: CustomizeColors.textBlackColor),
-                        ),
-                        validator: validateName),
                     TextFormField(
                       //key: _formKey,
                       keyboardType: TextInputType.emailAddress,
@@ -89,7 +69,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           borderSide:
                               BorderSide(color: CustomizeColors.textBlackColor),
                         ),
-                        labelText: TextString.email,
+                        labelText: 'Email',
                         labelStyle:
                             TextStyle(color: CustomizeColors.textBlackColor),
                         hintStyle:
@@ -99,11 +79,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         //handling the exception in try catch block
                         try {
                           if (value.isEmpty) {
-                            return TextString.plzEnterEmail;
+                            return 'Please enter your email ';
                           }
-                          if (!RegExp(TextString.emailValidation)
+                          if (!RegExp("^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]")
                               .hasMatch(value)) {
-                            return TextString.validEmail;
+                            return 'Please Enter a valid Email';
                           }
                         } catch (e) {
                           print(e.toString());
@@ -144,13 +124,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               });
                             },
                           ),
-                          labelText: TextString.password,
+                          labelText: 'Password',
                           labelStyle:
                               TextStyle(color: CustomizeColors.textBlackColor),
                           hintStyle:
                               TextStyle(color: CustomizeColors.textBlackColor),
                         ),
                         validator: validatePassword),
+                    SizedBox(height: 10),
+                    GestureDetector(child: Text('Forget Password?')),
+                    // CustomizeFlatButton(
+                    //   text: 'Forget Password?',
+                    // ),
                     SizedBox(height: 20),
                     Center(
                       child: Container(
@@ -169,44 +154,102 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               print(e.toString());
                             }
                           },
-                          text: TextString.buttonSignUp,
+                          text: TextString.login_btn,
                         ),
                       ),
                     ),
+                    SizedBox(height: 20),
+                    Center(
+                      child: Text(
+                        TextString.or,
+                        style: TextStyle(fontSize: 18),
+                      ),
+                    ),
+                    SizedBox(height: 10),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        FloatingActionButton(
+                          onPressed: () {
+                            signInWithGoogle().whenComplete(() {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => HomeScreen()));
+                            });
+                          },
+                          backgroundColor: Colors.white,
+                          heroTag: 'btn1',
+                          child: Image(
+                              image:
+                                  AssetImage('assets/images/google_logo.png')),
+                        ),
+                        FloatingActionButton(
+                          onPressed: () {},
+                          backgroundColor: Colors.white,
+                          heroTag: 'btn2',
+                          child: Image(
+                            image:
+                                AssetImage('assets/images/facebook_logo.png'),
+                          ),
+                        )
+                      ],
+                    ),
+                    SizedBox(height: 20),
+                    Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                      Text("Don't have an account?"),
+                      CustomizeFlatButton(
+                        onPressed: () {
+                          Navigator.pushNamed(context, '/signup');
+                        },
+                        text: 'Sign Up',
+                      ),
+                    ]),
                   ],
                 ),
-              ),
-              Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(TextString.alreayHaveAnAccount),
-                      FlatButton(
-                        child: Text(
-                          TextString.buttonSignIn,
-                          style:
-                              TextStyle(color: CustomizeColors.textPinkColor),
-                        ),
-                        onPressed: (){
-                          Navigator.pushNamed(context, '/login');
-                        },
-                      ),
-                    ],
-                  ),
-                  FlatButton(
-                    child: Text(
-                      TextString.skipForNow,
-                      style: TextStyle(fontSize: 16),
-                    ),
-                    onPressed: () {},
-                  )
-                ],
               ),
             ],
           ),
         ),
       ),
     );
+  }
+
+  //Validation for the password
+  String validatePassword(String value) {
+    Pattern pattern =
+        r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$';
+    RegExp regex = RegExp(pattern);
+    print(value);
+    if (value.isEmpty) {
+      return 'Please enter password';
+    } else {
+      if (!regex.hasMatch(value))
+        return 'Password must contain Uppercase, Lowercase letters, digits, \nand atleast 1 Special Charcter';
+      else
+        return null;
+    }
+  }
+
+  //Validation for the email
+  String validateEmail(String value) {
+    Pattern pattern =
+        r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+    RegExp regex = RegExp(pattern);
+    if (!regex.hasMatch(value)) {
+      print('Email is valid');
+      return 'Enter Valid Email';
+    } else {
+      print('Email is correct');
+      return 'Email is correct';
+    }
+  }
+
+  //Validation for the name
+  String validateName(String value) {
+    if (value.isEmpty) {
+      return 'Please enter your name';
+    }
+    return null;
   }
 }

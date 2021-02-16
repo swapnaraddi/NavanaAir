@@ -17,7 +17,7 @@ class MaxSizedBox extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       child: SizedBox(
-        height: MediaQuery.of(context).size.width *0.2,
+        height: MediaQuery.of(context).size.height *0.2,
       ),
     );
   }
